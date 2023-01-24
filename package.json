@@ -1,0 +1,29 @@
+{
+  "name": "boilerplate-code-nodejs",
+  "version": "1.0.0",
+  "description": "Nodejs BoilerPlate Code",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rlawoals2590/BoilerPlate-Code-nodejs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rlawoals2590/BoilerPlate-Code-nodejs/issues"
+  },
+  "homepage": "https://github.com/rlawoals2590/BoilerPlate-Code-nodejs#readme",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "mongoose": "^6.8.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
