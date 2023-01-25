@@ -4,16 +4,15 @@ const config = require('./config/key');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const port = 5000;
-const {
-    User
-} = require('./models/User');
+const { auth } = require('./middleware/auth');
+const { User } = require("./models/User");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 const mongoose = require('mongoose');
-const { auth } = require('./middleware/auth');
+
 mongoose.set('strictQuery', true);
 mongoose
     .connect(config.mongoURL,{ 
@@ -54,9 +53,8 @@ app.post('/api/users/login', (req, res) => {
         user.comparePassword(req.body.password, (err, isMatch) => {
             console.log('isMatch', isMatch);
             if(!isMatch)
-            return res.json({ loginSuccess: false, message: "비밀번호가 틀렸습니다."})
+                return res.json({ loginSuccess: false, message: "비밀번호가 틀렸습니다."})
             
-            if(isMatch === true)
             user.generateToken((err, user) => {
                 if (err) return res.status(400).send(err);
                 res.cookie("x_auth", user.token).status(200).json({
@@ -81,5 +79,17 @@ app.get('/api/users/auth', auth, (req, res) => {
         image: req.user.image 
     })
 })
+
+app.get('/api/users/logout', auth, (req, res) => {
+    // console.log('req.user', req.user)
+    User.findOneAndUpdate({ _id: req.user._id },
+      { token: "" }
+      , (err, user) => {
+        if (err) return res.json({ success: false, err });
+        return res.status(200).send({
+          success: true
+        })
+      })
+  })
 
 app.listen(port, () => {console.log(`Example app Listenling at http://localhost:${port}`)});
